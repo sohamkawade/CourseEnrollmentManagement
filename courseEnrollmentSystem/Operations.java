@@ -32,34 +32,45 @@ public class Operations {
 		}
 	}
 
-	public static void viewEnrollment() {
-		try {
-			Connection connection = DatabaseConnection.connect();
-			Statement statement = connection.createStatement();
+public static void viewEnrollment() {
+    try {
+        Connection connection = DatabaseConnection.connect();
+        Statement statement = connection.createStatement();
 
-			String query = "SELECT * FROM courseEnrollments";
+        String query = "SELECT * FROM courseEnrollments";
 
-			ResultSet rs = statement.executeQuery(query);
+        ResultSet rs = statement.executeQuery(query);
 
-			boolean isExist = false;
-			while (rs.next()) {
-				isExist = true;
-				System.out.print(rs.getInt(1) + " | " + rs.getInt(2) + " | " + rs.getString(3) + " | " + rs.getString(4)
-						+ " | " + rs.getString(5) + " | " + rs.getDate(6) + " | " + rs.getInt(7) + " | "
-						+ rs.getString(8) + "\n");
+        boolean isExist = false;
 
-			}
-			if (!isExist) {
-				System.out.println("data does not exist!");
-			}
+        System.out.println("e_id | s_id | firstname | lastname | c_name | e_date | c_duration | c_status");
+        System.out.println("----------------------------------------------------------------------------");
 
-			statement.close();
-			connection.close();
+        while (rs.next()) {
+            isExist = true;
+            System.out.println(
+                rs.getInt("enrollment_id") + " | " +
+                rs.getInt("student_id") + " | " +
+                rs.getString("firstname") + " | " +
+                rs.getString("lastname") + " | " +
+                rs.getString("course_name") + " | " +
+                rs.getDate("enrollment_date") + " | " +
+                rs.getInt("course_duration") + " | " +
+                rs.getString("course_status")
+            );
+        }
 
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
-	}
+        if (!isExist) {
+            System.out.println("Data does not exist!");
+        }
+
+        statement.close();
+        connection.close();
+
+    } catch (Exception e) {
+        System.out.println(e.getMessage());
+    }
+}
 
 	public static void updateEnrollment(int id, String firstname, String lastname, String cname, int cduration) {
 		try {
